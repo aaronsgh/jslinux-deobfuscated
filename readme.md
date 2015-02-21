@@ -1,6 +1,18 @@
 De-obfuscated JSLinux
 =========================================================
 
+Most of this comes straight from
+https://github.com/levskaya/jslinux-deobfuscated.
+
+I've added an interface to make it easy to use the JsLinux CPU as a
+bytecode interpreter.  This is `runX86()` in interp.js.  I've also
+included a demo in interp.html.  The interpreter relies only on
+cpux86-ta.js.  I haven't changed any of the existing code, just added
+new files.
+
+Levskaya's Readme:
+==================
+
 I wanted to understand how the amazing [JsLinux][1] worked, so in a
 fit of mania I hand de-obfuscated the codebase while studying it over
 a few days' time.  In the off-chance someone else might be interested
