@@ -3,10 +3,10 @@
 <head>
 <title>Javascript X86 Interpreter</title>
 <script>
-  // DEBUG
-  //window.onerror=function errHandler(msg, url, line) {
-  //  alert(url + '\n\n' + line.toString() + '\n\n' + msg)
-  //}
+  /* DEBUG
+  window.onerror=function errHandler(msg, url, line) {
+    alert(url + '\n\n' + line.toString() + '\n\n' + msg)
+  } */
 </script>
 <style>
   fieldset { float: left; margin: 1%; }
@@ -16,8 +16,8 @@
 </head>
 <body>
 
-<script type="text/javascript" src="cpux86-ta.js"></script>
-<script type="text/javascript" src="interp.js"></script>
+<script src="cpux86-ta.js"></script>
+<script src="interp.js"></script>
 
 <form onsubmit="runprog(); return false;">
   <fieldset class="reg">
@@ -57,6 +57,9 @@ F7D8 ; neg  eax
     <br/>
     <label for="memsize">Memory Size (KB):</label> <br/>
     <input id="memsize" type="number" min="1" value="1"/>
+    <br/>
+    <label for="ncycles">Max CPU cycles to run:</label> <br/>
+    <input id="ncycles" type="number" min="1" value="10000000"/>
     <input type="submit" value="Run"/>
   </fieldset>
 
@@ -103,7 +106,9 @@ F7D8 ; neg  eax
       var esp = Number( document.getElementById('ebp0').value );
       var ebp = Number( document.getElementById('ebp0').value );
       var memsize = Number( document.getElementById('memsize').value );
-      var regs = runX86(prog, [eax, ebx, ecx, edx, esi, edi, esp, ebp], memsize);
+      var ncycles = Number( document.getElementById('ncycles').value );
+      var regs = runX86(prog, [eax, ebx, ecx, edx, esi, edi, esp, ebp],
+                        memsize, ncycles);
       if (!regs) {
         alert('Error: Could not run program.');
       } else {

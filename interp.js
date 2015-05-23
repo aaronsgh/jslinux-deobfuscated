@@ -1,7 +1,7 @@
 "use strict";
 
 /* Repurposing the jslinux CPU as an x86 interpreter */
-function runX86(program, regs, memsize)
+function runX86(program, regs, memsize, ncycles)
 {
     // Ensure termination at program end
     program.push(0xF4);
@@ -31,11 +31,8 @@ function runX86(program, regs, memsize)
       cpu.regs[i] = regs[i];
     }
 
-    // Maximum runtime
-    var Ncycles = 10000000;
-
     // Run the program!
-    var exit_status = cpu.exec(Ncycles);
+    var exit_status = cpu.exec(ncycles);
 
     // Check for HALT code (opcode F4)
     if (exit_status !== 257) {
