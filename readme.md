@@ -7,7 +7,10 @@ https://github.com/levskaya/jslinux-deobfuscated.
 I've added an interface to make it easy to use the JsLinux CPU as a
 bytecode interpreter.  This is runX86() in interp.js.  The interpreter
 relies only on cpux86-ta.js.  I've also included a demo in interp.html.
-I haven't changed any of the existing code, just added new files.
+I haven't changed any of the existing code, just added two new files.
+
+You can try the demo at
+http://aaronsgh.github.io/jslinux-deobfuscated/interp.html.
 
 Levskaya's Readme:
 ==================
