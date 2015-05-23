@@ -7,6 +7,7 @@ function runX86(program, regs, memsize, ncycles)
     program.push(0xF4);
     // Read program
     var len = program.length;
+    var progsize = len % 32 == 0 ? len : len + 32 - (len % 32);
     var binary = new ArrayBuffer(len * 8);
     var binary_bytes = new Uint8Array(binary);
     var i;
@@ -17,8 +18,12 @@ function runX86(program, regs, memsize, ncycles)
     // Init CPU
     var cpu = new CPU_X86();
 
+    // We don't have ports
+    cpu.ld32_port = function(x){throw "No port: ld32_port";};
+
     // memory size (in KB)
-    cpu.phys_mem_resize(1024 * memsize);
+    memsize *= 1024;
+    cpu.phys_mem_resize(memsize);
 
     // start at 0 because why not :)
     var start_addr = 0;
@@ -26,13 +31,22 @@ function runX86(program, regs, memsize, ncycles)
 
     cpu.eip = start_addr;
 
+    cpu.segs[1].base = start_addr; // CS
+    cpu.segs[2].base = memsize;    // SS
+    cpu.segs[3].base = start_addr + progsize; // DS
+
     // arguments
     for (i=0; i < regs.length && i < 8; i++) {
       cpu.regs[i] = regs[i];
     }
 
     // Run the program!
-    var exit_status = cpu.exec(ncycles);
+    try {
+      var exit_status = cpu.exec(ncycles);
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
 
     // Check for HALT code (opcode F4)
     if (exit_status !== 257) {
